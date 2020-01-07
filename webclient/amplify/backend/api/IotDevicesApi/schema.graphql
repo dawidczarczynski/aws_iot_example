@@ -1,0 +1,4 @@
+type Device @model {
+  name: String!
+  arn: String!
+}

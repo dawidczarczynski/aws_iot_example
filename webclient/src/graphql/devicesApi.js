@@ -3,6 +3,7 @@ import awsconfig from '../aws-exports';
 
 import { listDevices } from './listDevicesQuery';
 import { registerDeviceMutation } from './registerDeviceMutation';
+import { deviceMessagesSubscription } from './deviceMessagesSubscription';
 
 API.configure(awsconfig)
 
@@ -30,4 +31,12 @@ export const registerNewDevice = async (name) => {
       console.log('device created', device);
       return device;
     });
+};
+
+export const getDeviceMessages = name => {
+  console.log('subscribing device: ', name);
+
+  const subscriptionOperation = graphqlOperation(deviceMessagesSubscription(name));
+  
+  return API.graphql(subscriptionOperation);
 };

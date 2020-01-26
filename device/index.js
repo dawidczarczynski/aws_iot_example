@@ -1,24 +1,24 @@
 const { downloadCertificates, checkIfCertsExists } = require('./certificates');
 const connectDevice = require('./device');
-const { DEVICE_NAME } = require('./config');
+const { DEVICE_NAME, RECONNECT_TIME_IN_SECONDS } = require('./config');
 
-(async () => {
+console.log('Starting device...');
+console.log('\x1b[33m', '🚀  Device Name:', DEVICE_NAME, '\x1b[0m');
+
+let connectionInterval = setInterval(async () => {
     try {
-        console.log('Starting device...');
-        console.log('\x1b[33m', '🚀  Device Name:', DEVICE_NAME, '\x1b[0m');
-
-        const certificatesExists = checkIfCertsExists();
-        if (certificatesExists) {
+        if (checkIfCertsExists()) {
             console.log('Certificates exists...');
-        
+
+            clearInterval(connectionInterval);
             connectDevice();
         } else {
             console.log('Certificates do not exist');
-        
             await downloadCertificates();
-            connectDevice();
+            console.log('Device will try to reconnect...');
         }
     } catch (ex) {
         console.error(ex.message);
+        console.log(`Device will try to reconnect in ${RECONNECT_TIME_IN_SECONDS} seconds...`);
     }
-})();
+}, RECONNECT_TIME_IN_SECONDS * 1000);

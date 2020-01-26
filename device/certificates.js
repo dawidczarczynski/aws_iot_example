@@ -1,12 +1,8 @@
 const fs = require('fs');
 const fetch = require('node-fetch');
 
-const { 
-  DEVICE_API, 
-  DEVICE_NAME,
-  CERTS_DIRECTORY,
-  CERTS_FILES
-} = require('./config');
+const { DEVICE_API, DEVICE_NAME } = require('./config');
+const { CERTS_DIRECTORY, CERTS_FILES } = require('./constants');
 
 const getFileNameFromPath = path => 
   path
@@ -32,7 +28,7 @@ const createDirectory = dirName => {
   const directoryExists = fs.existsSync(dirName);
 
   if (!directoryExists) {
-    fs.mkdirSync(dirName);
+    fs.mkdirSync(dirName, { recursive: true });
     console.log("Directory created");
   } else {
     console.log("Directory already exists");
@@ -47,11 +43,11 @@ const downloadCertificates = async () => {
   if (response.ok) {
     const { urls } = await response.json();
     const certsDownloadPromises = urls.map(url => {
-      const path = `${CERTS_DIRECTORY}/${getFileNameFromPath(url)}`
+      const path = `${CERTS_DIRECTORY}/${DEVICE_NAME}/${getFileNameFromPath(url)}`
       return downloadFile(url, path)
     })
 
-    createDirectory(CERTS_DIRECTORY);
+    createDirectory(`${CERTS_DIRECTORY}/${DEVICE_NAME}`);
     await Promise.all(certsDownloadPromises);
 
     console.log('Certificates downloaded sucessfully');

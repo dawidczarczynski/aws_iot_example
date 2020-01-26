@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "aws-iot-device-sdk": "^2.2.1",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "onoff": "^5.0.1"
   }
 }

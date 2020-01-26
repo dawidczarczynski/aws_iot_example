@@ -10,29 +10,47 @@ class App extends Component {
 
   constructor() {
     super();
-    this.state = { devices: null, messages: [] };
+    this.state = { devices: null, subscribedDevice: null, messages: [] };
+    this.subscription = null;
     this.registerDevice = this.registerDevice.bind(this);
+    this.subscribeForDevice = this.subscribeForDevice.bind(this);
   }
 
   componentDidMount() {
     getDevicesList()
       .then(devices => this.setState({ devices }));
-
-    getDeviceMessages("test1").subscribe({
-      next: response => {
-        const { messages } = this.state;
-        const message = response.value.data.publishedDeviceMessage;
-
-        console.log('Device message received:', message);
-
-        this.setState({ messages: [ message, ...messages ]});
-      }
-    })
   }
 
   registerDevice(name) {
     registerNewDevice(name)
       .then(device => this.setState({ devices: [...this.state.devices, device ]}));
+  }
+
+  subscribeForDevice(name) {
+    const { subscribedDevice } = this.state;
+
+    if (name === subscribedDevice) {
+      return;
+    }
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.setState({ messages: [] });
+    }
+
+    this.subscription = getDeviceMessages(name)
+      .subscribe({
+        next: response => {
+          const { messages } = this.state;
+          const message = response.value.data.publishedDeviceMessage;
+
+          console.log('Device message received:', message);
+
+          this.setState({ messages: [ message, ...messages ]});
+        }
+      })
+
+    this.setState({ subscribedDevice: name });
   }
 
   render() {
@@ -44,7 +62,7 @@ class App extends Component {
           <DeviceMessages messages={messages} />
         </div>
         <div className="rightPanel">
-          <DevicesList devices={devices} />
+          <DevicesList devices={devices} selectDevice={this.subscribeForDevice} />
           <NewDevice onSave={this.registerDevice} />
         </div>
       </div>

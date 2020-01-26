@@ -18,3 +18,7 @@
   color: #ffffff;
   line-height: 20px;
 }
+
+.deviceListItem.active {
+  background-color: red;
+}

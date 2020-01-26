@@ -5,6 +5,7 @@ import DeviceMessages from './components/DeviceMessages';
 import { getDevicesList, registerNewDevice, getDeviceMessages } from './graphql/devicesApi';
 
 import './layout.css';
+import SubscribedDevice from './components/SubscribedDevice';
 
 class App extends Component {
 
@@ -45,7 +46,7 @@ class App extends Component {
           const message = response.value.data.publishedDeviceMessage;
 
           console.log('Device message received:', message);
-
+          
           this.setState({ messages: [ message, ...messages ]});
         }
       })
@@ -54,10 +55,11 @@ class App extends Component {
   }
 
   render() {
-    const { devices, messages } = this.state;
+    const { subscribedDevice, devices, messages } = this.state;
 
     return (
       <div className="container">
+        { subscribedDevice && (<SubscribedDevice device={subscribedDevice} />)}
         <div className="leftPanel">
           <DeviceMessages messages={messages} />
         </div>

@@ -1,0 +1,10 @@
+.subscribedDevice {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background: red;
+  color: #ffffff;
+  font-size: 10px;
+  border-radius: 10px;
+  padding: 10px;
+}

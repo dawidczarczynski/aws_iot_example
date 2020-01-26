@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import './newDevice.css';
+
 class NewDevice extends Component {
 
     constructor(props) {
@@ -21,13 +23,12 @@ class NewDevice extends Component {
     render() {
         const { name } = this.state;
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Device name:
-                    <input type="text" name="name" value={name} onChange={this.handleNameChange} />
-                </label>
-                <input type="submit" value="Add device" />
-            </form>
+            <div className="newDevice">
+                <form onSubmit={this.handleSubmit}>
+                    <input type="text" placeholder="Device name..." name="name" value={name} onChange={this.handleNameChange} />
+                    <input type="submit" value="Add device" />
+                </form>
+            </div>
         );
     }
 

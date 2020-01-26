@@ -1,17 +1,27 @@
 import React, { Component } from 'react';
 
+import './devicesList.css'
+
 class DevicesList extends Component {
 
     render() {
         const { devices } = this.props;
         return (
-            <ul>
-                { 
-                    devices && devices.map(
-                        device => (<li key={device.name}>Name: {device.name} <br/> ARN: {device.arn}</li>)
-                    ) 
-                }
-            </ul>
+            <div className="deviceListContainer">
+                <ul className="deviceList">
+                    { 
+                        devices && devices.map(
+                            device => (
+                                <li 
+                                    className="deviceListItem"
+                                    key={device.name}>
+                                        Name: {device.name} <br/> ARN: {device.arn}
+                                </li>
+                            )
+                        ) 
+                    }
+                </ul>
+            </div>
       )
     }
 

@@ -1,0 +1,16 @@
+.deviceMessages {
+  height: 100vh;
+  background-color: #dedbe6;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: scroll;
+  box-sizing: border-box;
+}
+
+.deviceMessage {
+  background-color: #ffffff;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 10px;
+}

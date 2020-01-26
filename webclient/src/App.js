@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import DevicesList from './components/DevicesList';
-import { getDevicesList, registerNewDevice, getDeviceMessages } from './graphql/devicesApi';
 import NewDevice from './components/NewDevice';
 import DeviceMessages from './components/DeviceMessages';
+import { getDevicesList, registerNewDevice, getDeviceMessages } from './graphql/devicesApi';
+
+import './layout.css';
 
 class App extends Component {
 
@@ -16,14 +18,14 @@ class App extends Component {
     getDevicesList()
       .then(devices => this.setState({ devices }));
 
-    getDeviceMessages("123456").subscribe({
+    getDeviceMessages("test1").subscribe({
       next: response => {
         const { messages } = this.state;
         const message = response.value.data.publishedDeviceMessage;
 
         console.log('Device message received:', message);
 
-        this.setState({ messages: [ ...messages, message ]});
+        this.setState({ messages: [ message, ...messages ]});
       }
     })
   }
@@ -37,11 +39,15 @@ class App extends Component {
     const { devices, messages } = this.state;
 
     return (
-      <>
-        <DevicesList devices={devices} />
-        <NewDevice onSave={this.registerDevice} />
-        <DeviceMessages messages={messages} />
-      </>
+      <div className="container">
+        <div className="leftPanel">
+          <DeviceMessages messages={messages} />
+        </div>
+        <div className="rightPanel">
+          <DevicesList devices={devices} />
+          <NewDevice onSave={this.registerDevice} />
+        </div>
+      </div>
     );
   }
 

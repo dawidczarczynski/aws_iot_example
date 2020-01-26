@@ -1,0 +1,7 @@
+.newDevice {
+  height: 10vh;
+  background-color: #141213;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

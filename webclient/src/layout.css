@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+}
+
+.leftPanel {
+  width: 60vw;
+}
+
+.rightPanel {
+  width: 40vw;
+}

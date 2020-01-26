@@ -1,0 +1,20 @@
+.deviceListContainer {
+  height: 90vh;
+  background-color: #283043;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+
+.deviceList {
+  list-style: none;
+}
+
+.deviceListItem {
+  font-size: 12px;
+  border: 1px solid #ffffff;
+  padding: 20px;
+  margin: 5px 0;
+  color: #ffffff;
+  line-height: 20px;
+}

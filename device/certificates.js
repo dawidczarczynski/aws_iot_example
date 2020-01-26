@@ -30,6 +30,7 @@ const createDirectory = dirName => {
   console.log("Creating directory...")
  
   const directoryExists = fs.existsSync(dirName);
+
   if (!directoryExists) {
     fs.mkdirSync(dirName);
     console.log("Directory created");
@@ -41,23 +42,25 @@ const createDirectory = dirName => {
 const downloadCertificates = async () => {
   console.log('Trying to download certificates...')
 
-  try {
-    const response = await fetch(`${DEVICE_API}/certificates/${DEVICE_NAME}`);
-    if (response.ok) {
-      const { urls } = await response.json();
-      const certsDownloadPromises = urls.map(url => {
-        const path = `${CERTS_DIRECTORY}/${getFileNameFromPath(url)}`
-        return downloadFile(url, path)
-      })
+  const response = await fetch(`${DEVICE_API}/certificates/${DEVICE_NAME}`);
   
-      createDirectory(CERTS_DIRECTORY);
-      await Promise.all(certsDownloadPromises);
-      console.log('Certificates downloaded sucessfully');
-    } else {
-      throw new Error(`Cannot fetch certificates for reason: ${response.statusText}`)
-    }
-  } catch (ex) {
-    console.error(ex.message);
+  if (response.ok) {
+    const { urls } = await response.json();
+    const certsDownloadPromises = urls.map(url => {
+      const path = `${CERTS_DIRECTORY}/${getFileNameFromPath(url)}`
+      return downloadFile(url, path)
+    })
+
+    createDirectory(CERTS_DIRECTORY);
+    await Promise.all(certsDownloadPromises);
+
+    console.log('Certificates downloaded sucessfully');
+  } else {
+    const error = response.status === 404 
+      ? "Device is not registered yet" 
+      : response.statusText;
+
+    throw new Error(`Cannot fetch certificates for reason: ${error}`)
   }
 }
 

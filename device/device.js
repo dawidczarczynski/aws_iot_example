@@ -13,9 +13,11 @@ const connectDevice = () => {
     console.log('Device connected...');
     setInterval(
       () => {
-        const message = { test_data: 1 };
+        const test_data = Math.floor(Math.random() * 100) + 1  
+        const message = { device: DEVICE_NAME, message: { test_data }};
+
         device.publish(
-          'topic', 
+          'iot/device', 
           JSON.stringify(message), 
           {}, 
           () => console.log('Message has been published: ', message)
